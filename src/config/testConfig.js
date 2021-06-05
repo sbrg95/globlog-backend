@@ -3,10 +3,9 @@ export default {
     jwt: 'secret',
   },
   cloudinary: {
-    cloud_name: 'sbrg95',
-    api_key: '418646451448385',
-    api_secret: 'QWPuIeWs-ngJ3bCCtTpdLNQK7s4',
+    cloud_name: '',
+    api_key: '',
+    api_secret: '',
   },
-  dbUrl:
-    'mongodb+srv://sbrg95:dqsfggh123@globlogcluster.jz5ao.mongodb.net/globlogtesting?retryWrites=true',
+  dbUrl: '',
 };
