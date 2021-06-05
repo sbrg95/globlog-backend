@@ -33,7 +33,7 @@ switch (env) {
     envConfig = testConfig;
     break;
   default:
-    envConfig = devConfig;
+    break;
 }
 
 export default merge(baseConfig, envConfig);
