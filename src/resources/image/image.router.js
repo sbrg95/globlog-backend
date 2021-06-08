@@ -9,12 +9,13 @@ import Logger from '../../utils/logger';
 const router = Router();
 
 cloudinary.config({
-  cloud_name: config.cloud_name,
-  api_key: config.api_key,
-  api_secret: config.api_secret,
+  cloud_name: config.cloudinary.cloud_name,
+  api_key: config.cloudinary.api_key,
+  api_secret: config.cloudinary.api_secret,
 });
 
-const upload = multer({ dest: path.resolve(__dirname, 'uploads') });
+const rootPath = process.cwd();
+const upload = multer({ dest: path.resolve(rootPath, 'uploads') });
 
 const removeImage = (imagePath) => {
   fs.unlink(imagePath, (err) => {
@@ -25,15 +26,16 @@ const removeImage = (imagePath) => {
   });
 };
 
-router.route('/').post(upload.single('upload'), (req, res) => {
-  const imagePath = path.resolve(__dirname, 'uploads', req.file.filename);
-  cloudinary.uploader.upload(imagePath, (error, result) => {
-    if (error) {
-      Logger.error(error);
-    }
-    res.send(result);
-  });
-  removeImage(imagePath);
+router.route('/').post(upload.single('upload'), async (req, res) => {
+  const imagePath = path.resolve(rootPath, 'uploads', req.file.filename);
+  try {
+    const imageUrl = await cloudinary.uploader.upload(imagePath);
+    res.send(imageUrl);
+  } catch (error) {
+    Logger.error(error);
+  } finally {
+    removeImage(imagePath);
+  }
 });
 
 module.exports = router;
